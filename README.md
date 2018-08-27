@@ -92,3 +92,129 @@ functions:
 
 Run in your browser:
 `https://XXXXXXXXX.execute-api.eu-west-1.amazonaws.com/dev/`
+
+
+## Build routes
+Now we change project to new routes different methods.
+
+
+### Step 1.
+Replace current selection _functions_ in _serverless.yml_
+```yaml
+functions:
+  app:
+    handler: app.handler
+    events:
+      - http:
+          path: '/'
+          method: ANY
+          cors: true
+      - http:
+          path: '{proxy+}'
+          method: ANY
+          cors: true
+  fun:
+    handler: fun/fun.handler
+    events:
+      - http:
+          path: 'fun/{proxy+}'
+          method: GET
+          cors: true
+      - http:
+          path: 'fun/'
+          method: POST
+          cors: true
+      - http:
+          path: 'fun/'
+          method: PUT
+          cors: true
+      - http:
+          path: 'fun/{proxy+}'
+          method: DELETE
+          cors: true
+ ```
+ 
+ 
+### Step 2.
+ New dir and file ex. _/fun/fun.js_ with code:
+ ```js
+const serverless = require('serverless-http');
+const bodyParser = require('body-parser');
+const express = require('express');
+const app = express();
+
+app.use(bodyParser.json({ strict: false }));
+
+
+// Method GET
+app.get('/fun/:proxy', function (req, res) {
+
+    // Your code
+    res.send('Yes, You used method <b>'+ req.method +'</b> and param: <b>'+ req.params.proxy +'</b>');
+});
+
+
+// Method POST
+app.post('/fun', function (req, res) {
+    const data = req.body;
+
+    // Your code
+    res.send('Yes, You used method <b>'+ req.method +'</b> and param: <b>'+ JSON.stringify(data, null, 2) +'</b>');
+});
+
+
+// Method PUT
+app.put('/fun', function (req, res) {
+    const data = req.body;
+
+    // Your code
+    res.send('Yes, You used method <b>'+ req.method +'</b> and param: <b>'+ JSON.stringify(data, null, 2) +'</b>');
+});
+
+
+// Method DELETE
+app.delete('/fun/:proxy', function (req, res) {
+
+    // Your code
+    res.send('Yes, You used method <b>'+ req.method +'</b> and param: <b>'+ req.params.proxy +'</b>');
+});
+
+
+module.exports.handler = serverless(app);
+```
+OR
+
+Use commit: 
+[Features-1](https://github.com/damians-pl/sls-firstAppExpress/commit/9c612cc060d949b8bf2503a0cb50d253c767b757)
+
+### Step 3.
+
+```bash
+$ sls deploy
+```
+Then return:
+
+```bash
+(...)
+endpoints:
+  ANY - https://XXXXXXXXX.execute-api.eu-west-1.amazonaws.com/dev/
+  ANY - https://XXXXXXXXX.execute-api.eu-west-1.amazonaws.com/dev/{proxy+}
+  GET - https://XXXXXXXXX.execute-api.eu-west-1.amazonaws.com/dev/fun/{proxy+}
+  POST - https://XXXXXXXXX.execute-api.eu-west-1.amazonaws.com/dev/fun
+  PUT - https://XXXXXXXXX.execute-api.eu-west-1.amazonaws.com/dev/fun
+  DELETE - https://XXXXXXXXX.execute-api.eu-west-1.amazonaws.com/dev/fun/{proxy+}
+functions:
+  app: sls-firstAppExpress-dev-app
+  fun: sls-firstAppExpress-dev-fun
+
+```
+
+### Step 4.
+Testing:
+
+```bash
+$ curl -H "Content-Type: application/json" -X GET https://XXXXXXXXXXX.execute-api.eu-west-1.amazonaws.com/dev/fun/FooBar
+$ curl -H "Content-Type: application/json" -X POST https://XXXXXXXXXXX.execute-api.eu-west-1.amazonaws.com/dev/fun -d "{\"Foo\": \"bar\"}"
+$ curl -H "Content-Type: application/json" -X PUT https://XXXXXXXXXXX.execute-api.eu-west-1.amazonaws.com/dev/fun -d "{\"Foo\": \"bar\"}"
+$ curl -H "Content-Type: application/json" -X DELETE https://XXXXXXXXXXX.execute-api.eu-west-1.amazonaws.com/dev/fun/FooBar
+```
