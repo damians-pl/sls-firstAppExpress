@@ -19,7 +19,7 @@ functions:
           method: ANY
           cors: true
   fun:
-    handler: fun/fun.handler
+    handler: routes/fun.handler
     events:
       - http:
           path: 'fun/{proxy+}'
