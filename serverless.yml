@@ -1,0 +1,20 @@
+service: sls-firstAppExpress
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+  stage: dev
+  region: eu-west-1
+
+functions:
+  app:
+    handler: app.handler
+    events:
+      - http:
+          path: '/'
+          method: ANY
+          cors: true
+      - http:
+          path: '{proxy+}'
+          method: ANY
+          cors: true
