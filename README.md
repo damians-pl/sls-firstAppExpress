@@ -218,3 +218,9 @@ $ curl -H "Content-Type: application/json" -X POST https://XXXXXXXXXXX.execute-a
 $ curl -H "Content-Type: application/json" -X PUT https://XXXXXXXXXXX.execute-api.eu-west-1.amazonaws.com/dev/fun -d "{\"Foo\": \"bar\"}"
 $ curl -H "Content-Type: application/json" -X DELETE https://XXXXXXXXXXX.execute-api.eu-west-1.amazonaws.com/dev/fun/FooBar
 ```
+
+## Remove project app
+To remove your application from AWS, use this command:
+```bash
+$ sls remove
+```
