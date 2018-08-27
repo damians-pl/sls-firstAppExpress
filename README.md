@@ -56,3 +56,39 @@ Use commit:
 ```bash
 $ sls deploy
 ```
+
+Return:
+
+```bash
+Serverless: Packaging service...
+Serverless: Excluding development dependencies...
+Serverless: Creating Stack...
+Serverless: Checking Stack create progress........
+Serverless: Stack create finished...
+Serverless: Uploading CloudFormation file to S3...
+Serverless: Uploading artifacts...
+Serverless: Uploading service .zip file to S3 (683.66 KB)...
+Serverless: Validating template...
+Serverless: Updating Stack...
+Serverless: Checking Stack update progress..........................................
+Serverless: Stack update finished...
+
+Service Information
+service: sls-firstAppExpress
+stage: dev
+region: eu-west-1
+stack: sls-firstAppExpress-dev
+
+api keys:
+  None
+  
+endpoints:
+  ANY - https://XXXXXXXXX.execute-api.eu-west-1.amazonaws.com/dev/
+  ANY - https://XXXXXXXXX.execute-api.eu-west-1.amazonaws.com/dev/{proxy+}
+
+functions:
+  app: sls-firstAppExpress-dev-app
+```
+
+Run in your browser:
+`https://XXXXXXXXX.execute-api.eu-west-1.amazonaws.com/dev/`
